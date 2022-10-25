@@ -4,6 +4,8 @@ import com.shop.dto.CartDetailDto;
 import com.shop.dto.CartItemDto;
 import com.shop.dto.CartOrderDto;
 import com.shop.repository.service.CartService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,14 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@Api(value = "CartController", tags = "Cart API")
 @RequiredArgsConstructor
 public class CartController {
     //  장바구니와 관련된 요청 처리하는 콘트롤러
 
     private final CartService cartService;
 
+    @ApiOperation(value = "카트 상품")
     @PostMapping(value = "/cart")
     public @ResponseBody ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto,
                                               BindingResult bindingResult, Principal principal){
@@ -53,6 +57,7 @@ public class CartController {
     }
 
     //  장바구니 페이지로 이동
+    @ApiOperation(value = "장바구니 페이지로 이동")
     @GetMapping(value = "/cart")
     public String orderHist(Principal principal, Model model){
         //  현재 로그인한 사용자의 이메일 정보를 이용하여 장바구니에 담겨있는 상품 정보 조회
@@ -66,6 +71,7 @@ public class CartController {
 
     //  장바구니 상품의 수량을 업데이트하는 요청 처리
     //  상품의 수량만 업데이트 하기 때문에 Patch
+    @ApiOperation(value = "카트 상품 update")
     @PatchMapping(value = "/cartItem/{cartItemId}")
     public @ResponseBody ResponseEntity updateCartItem(@PathVariable("cartItemId") Long cartItemId,
                                                        int count, Principal principal){
@@ -79,6 +85,7 @@ public class CartController {
     }
 
     //  장바구니 상품 삭제 요청 처리
+    @ApiOperation(value = "카트 상품 삭제")
     @DeleteMapping(value = "/cartItem/{cartItemId}")
     public @ResponseBody ResponseEntity deleteCartItem(@PathVariable("cartItemId") Long cartItemId,
                                                        Principal principal){
@@ -90,6 +97,7 @@ public class CartController {
     }
     
     //  장바구니 상품의 수량을 업데이트하는 요청 처리
+    @ApiOperation(value = "카트 상품 주문")
     @PostMapping(value = "/cart/orders")
     public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto, 
                                                       Principal principal){

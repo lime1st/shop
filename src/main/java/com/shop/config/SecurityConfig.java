@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //  ADMIN role일 경우에만 "/admin/**"에 접근
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 //  나머지 경로 들은 모두 인증 요구
+                .antMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 .anyRequest().authenticated();
 
         http.exceptionHandling()
@@ -64,9 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
-    @Override
-    public void configure(WebSecurity web) throws  Exception{
-        //  static 디렉터리의 하위 파일들은 인증을 무시하도록 설정
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**");
-    }
+//      컴파일 시 콘솔에서 경고메시지가 나와서 http.authorizeRequests()로 옮겼다(경고메시지가 옮기라는 뜻이었다)
+//    @Override
+//    public void configure(WebSecurity web) throws  Exception{
+//        //  static 디렉터리의 하위 파일들은 인증을 무시하도록 설정
+//        web.ignoring().mvcMatchers("/", "/members/**", "/item/**", "/images/**");
+//    }
 }
